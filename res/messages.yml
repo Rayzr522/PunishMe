@@ -1,0 +1,56 @@
+### NOTES:
+# - '&' color codes are translated automagically
+# - You can reference a key with [[key]], example:
+#
+#     key1: "world"
+#     key2: "Hello [[key1]]"
+#     your:
+#       path:
+#         here:
+#           key3: ", how are you today?"
+#     key4: "[[key2]][[your.path.here.key3]]"
+# 
+# - A color-code reference sheet can be found at the bottom of this file
+
+
+
+usage:
+    punishme: "&7/punishme &a[reload|save]"
+    punish: "&7/punish &a<player> <reason>"
+
+only-players: "&cOnly players can use this command!"
+no-permission: "&cYou don't have permission to do that"
+error: "&cSomething went wrong! Please find an Admin and tell them contact Rayzr522 on the Bukkit forums."
+
+no-player: "&7The player '&a{0}&7' could not be found"
+multiple-players: "&7More than one player matching '&a{0}&7' were found"
+punished: "&7Player '&a{0}&7' has been punished &a{1}&7 time(s)"
+
+config-saved: "&7The config has been saved"
+config-reloaded: "&7The config has been reloaded"
+version-info: "&7This server is running &a{0}&7 v&a{1}&7"
+
+
+
+# 0 = black
+# 1 = dark blue
+# 2 = dark green
+# 3 = teal
+# 4 = dark red
+# 5 = purple
+# 6 = gold
+# 7 = gray
+# 8 = dark gray
+# 9 = blue
+# a = light green
+# b = aqua
+# c = red
+# d = pink
+# e = yellow
+# f = white
+# k = magic
+# l = bold
+# m = strike through
+# n = underline
+# o = italic
+# r = reset (white, no formatting)

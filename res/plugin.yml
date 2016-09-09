@@ -1,0 +1,11 @@
+name: PunishMe
+main: com.rayzr522.punishme.PunishMe
+version: 1.0
+description: Configurable punishment command with incremental penalties.
+commands:
+  punish:
+    description: "Punishes a player (must provide a reason)"
+    usage: 
+  punishme:
+    description: "Management command for PunishMe"
+    usage: "/punishme [reload]"
