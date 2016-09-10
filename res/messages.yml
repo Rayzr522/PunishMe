@@ -17,6 +17,7 @@
 usage:
     punishme: "&7/punishme &a[reload|save]"
     punish: "&7/punish &a<player> <reason>"
+    unpunish: "&7/unpunish &a<player>"
 
 please-use:
     punish: "&7Please use &a/punish"
