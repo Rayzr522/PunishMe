@@ -49,6 +49,19 @@ public class Players {
 
 	}
 
+	public static int decr(Player p) {
+		return decr(p.getUniqueId());
+	}
+
+	public static int decr(UUID id) {
+
+		int num = get(id) - 1;
+		if (num < 0) num = 0;
+		punishments.put(id, num);
+		return num;
+
+	}
+
 	public static YamlConfiguration save() {
 		YamlConfiguration config = new YamlConfiguration();
 
@@ -58,4 +71,5 @@ public class Players {
 
 		return config;
 	}
+
 }

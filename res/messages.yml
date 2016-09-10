@@ -20,11 +20,13 @@ usage:
 
 only-players: "&cOnly players can use this command!"
 no-permission: "&cYou don't have permission to do that"
+cant-mute: "&7Please use &a/punish"
 error: "&cSomething went wrong! Please find an Admin and tell them contact Rayzr522 on the Bukkit forums."
 
 no-player: "&7The player '&a{0}&7' could not be found"
 multiple-players: "&7More than one player matching '&a{0}&7' were found"
 punished: "&7Player '&a{0}&7' has been punished &a{1}&7 time(s)"
+unpunished: "&7Player '&a{0}&7' has been unpunished. Times punished: &a{1}&7"
 
 config-saved: "&7The config has been saved"
 config-reloaded: "&7The config has been reloaded"

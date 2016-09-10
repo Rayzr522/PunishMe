@@ -8,40 +8,72 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.rayzr522.punishme.cmd.CommandPunish;
 import com.rayzr522.punishme.cmd.CommandPunishMe;
+import com.rayzr522.punishme.cmd.CommandUnPunish;
 
 public class PunishMe extends JavaPlugin implements Listener {
 
+	// The logger (used for logging info to the console)
+	// You can also use System.out.println like usual, and it'll print to the
+	// server's console
 	private Logger	logger;
+	// The config file instance
 	private Config	config;
 
+	/**
+	 * Called when the plugin is enabled.
+	 */
 	@Override
 	public void onEnable() {
 
+		// Get the logger
 		logger = getLogger();
 
-		config = new Config();
-
+		// Initialize the Configuration class with this plugin's data path
 		Configuration.init(this);
-		if (!Configuration.loadFromJar("messages.yml", true)) {
+		// Attempt to load "messages.yml" from the JAR file if it doesn't exist
+		if (!Configuration.loadFromJar("messages.yml")) {
 			System.err.println("Failed to load config files!");
 			System.err.println("Gonna go die in a hole now...");
+			// We have failed
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 
+		// Initialize the config instance
+		config = new Config();
+
 		load();
 
+		// Register command handlers
 		getCommand("punish").setExecutor(new CommandPunish(this));
+		getCommand("unpunish").setExecutor(new CommandUnPunish(this));
 		getCommand("punishme").setExecutor(new CommandPunishMe(this));
 
+		// Register this as an event handler
 		getServer().getPluginManager().registerEvents(this, this);
 
+		// Save the punishment data every 5 minutes (5m * 60s * 20t = 6000
+		// ticks)
+		new BukkitRunnable() {
+
+			public void run() {
+				save();
+			}
+
+		}.runTaskTimer(this, 0, 6000);
+
+		// Success!
 		logger.info(versionText() + " enabled");
 
 	}
 
+	/**
+	 * Load all the config files from disk. This does not perform
+	 * plugin.reloadConfig().
+	 */
 	public void load() {
 
 		Msg.load(Configuration.getConfig("messages.yml"));
@@ -50,12 +82,20 @@ public class PunishMe extends JavaPlugin implements Listener {
 
 	}
 
+	/**
+	 * Save all data that must persist to the disk.
+	 */
 	public void save() {
 
 		Configuration.saveConfig(Players.save(), "players.yml");
 
 	}
 
+	/**
+	 * Get the config instance. Use this instead of getConfig().
+	 * 
+	 * @return The config instance for this plugin
+	 */
 	public Config config() {
 		return config;
 	}
@@ -74,15 +114,23 @@ public class PunishMe extends JavaPlugin implements Listener {
 
 	}
 
+	/**
+	 * Called by the EventHandler when a command is executed. This is to prevent
+	 * the punishment command from being used normally.
+	 * 
+	 * @param e
+	 *            the event
+	 */
 	@EventHandler
 	public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
 
+		// If they have permissions to not prevent use then just ignore this.
 		if (e.getPlayer().hasPermission(config.PERM_NOPREVENT)) { return; }
 
 		String msg = e.getMessage();
-		String cmd = "/" + config.COMMAND_BASE;
+		String cmd = "/" + config.COMMAND_PUNISH_BASE;
 		if (msg.equalsIgnoreCase(cmd) || (msg.indexOf(" ") != -1 && msg.substring(0, msg.indexOf(" ")).equalsIgnoreCase(cmd))) {
-			Msg.send(e.getPlayer(), "no-permission");
+			Msg.send(e.getPlayer(), "cant-mute");
 			e.setCancelled(true);
 		}
 

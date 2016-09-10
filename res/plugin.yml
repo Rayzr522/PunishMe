@@ -5,7 +5,10 @@ description: Configurable punishment command with incremental penalties.
 commands:
   punish:
     description: "Punishes a player (must provide a reason)"
-    usage: 
+    usage: "/punish <player> <reason>"
+  unpunish:
+    description: "Un-punishes a player"
+    usage: "/unpunish <player>"
   punishme:
     description: "Management command for PunishMe"
     usage: "/punishme [reload]"

@@ -111,10 +111,6 @@ public class Configuration {
 			if (val == null) {
 				continue;
 			}
-			if (!val.getClass().isAssignableFrom(field.getType())) {
-				System.err.println("Error loading '" + path + "': Invalid type '" + field.getType().getCanonicalName() + "' for field '" + field.getName() + "'");
-				continue;
-			}
 			try {
 				set(field, this, val);
 			} catch (IllegalArgumentException e) {

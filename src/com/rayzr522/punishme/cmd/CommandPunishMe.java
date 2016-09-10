@@ -47,6 +47,11 @@ public class CommandPunishMe implements CommandExecutor {
 			plugin.load();
 			Msg.send(sender, "config-reloaded");
 
+		} else if (cmd.equals("save")) {
+
+			plugin.save();
+			Msg.send(sender, "config-saved");
+
 		} else {
 
 			Msg.send(sender, "usage.punishme");

@@ -1,7 +1,6 @@
 
 package com.rayzr522.punishme.cmd;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -10,17 +9,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.rayzr522.punishme.ArrayUtils;
 import com.rayzr522.punishme.Config;
 import com.rayzr522.punishme.Msg;
 import com.rayzr522.punishme.Players;
 import com.rayzr522.punishme.PunishMe;
 
-public class CommandPunish implements CommandExecutor {
+public class CommandUnPunish implements CommandExecutor {
 
 	private PunishMe plugin;
 
-	public CommandPunish(PunishMe plugin) {
+	public CommandUnPunish(PunishMe plugin) {
 		this.plugin = plugin;
 	}
 
@@ -35,9 +33,9 @@ public class CommandPunish implements CommandExecutor {
 
 		}
 
-		if (args.length < 2) {
+		if (args.length < 1) {
 
-			Msg.send(sender, "usage.punish");
+			Msg.send(sender, "usage.unpunish");
 			return true;
 
 		}
@@ -52,13 +50,10 @@ public class CommandPunish implements CommandExecutor {
 		}
 
 		Player p = matches.get(0);
+		Bukkit.getServer().dispatchCommand(sender, config.getUnpunishCommand(p));
 
-		int time = config.TIME_FIRST + config.TIME_REPEAT * Players.get(p);
-		String punishment = config.getPunishCommand(p, time, ArrayUtils.concat(Arrays.copyOfRange(args, 1, args.length), " "));
-		Bukkit.getServer().dispatchCommand(sender, punishment);
-
-		Players.incr(p);
-		Msg.send(sender, "punished", p.getDisplayName(), "" + Players.get(p));
+		Players.decr(p);
+		Msg.send(sender, "unpunished", p.getDisplayName(), "" + Players.get(p));
 
 		return true;
 
