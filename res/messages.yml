@@ -18,9 +18,12 @@ usage:
     punishme: "&7/punishme &a[reload|save]"
     punish: "&7/punish &a<player> <reason>"
 
+please-use:
+    punish: "&7Please use &a/punish"
+    unpunish: "&7Please use &a/unpunish"
+
 only-players: "&cOnly players can use this command!"
 no-permission: "&cYou don't have permission to do that"
-cant-mute: "&7Please use &a/punish"
 error: "&cSomething went wrong! Please find an Admin and tell them contact Rayzr522 on the Bukkit forums."
 
 no-player: "&7The player '&a{0}&7' could not be found"

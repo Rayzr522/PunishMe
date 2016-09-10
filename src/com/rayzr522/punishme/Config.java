@@ -5,7 +5,8 @@ import org.bukkit.entity.Player;
 
 public class Config extends Configuration {
 
-	public String	PERM_NOPREVENT			= "PunishMe.noprevent";
+	public String	PERM_PREVENT_PUNISH		= "PunishMe.prevent.punishcmd";
+	public String	PERM_PREVENT_UNPUNISH	= "PunishMe.prevent.unpunishcmd";
 	public String	PERM_PUNISH				= "PunishMe.punish";
 	public String	PERM_PUNISHME			= "PunishMe.punishme";
 

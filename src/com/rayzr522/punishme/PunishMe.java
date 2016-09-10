@@ -124,16 +124,24 @@ public class PunishMe extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
 
-		// If they have permissions to not prevent use then just ignore this.
-		if (e.getPlayer().hasPermission(config.PERM_NOPREVENT)) { return; }
-
-		String msg = e.getMessage();
-		String cmd = "/" + config.COMMAND_PUNISH_BASE;
-		if (msg.equalsIgnoreCase(cmd) || (msg.indexOf(" ") != -1 && msg.substring(0, msg.indexOf(" ")).equalsIgnoreCase(cmd))) {
-			Msg.send(e.getPlayer(), "cant-mute");
-			e.setCancelled(true);
+		// Check to make sure they aren't using commands they aren't supposed to
+		if (match(config.COMMAND_PUNISH_BASE, e.getMessage())) {
+			if (e.getPlayer().hasPermission(config.PERM_PREVENT_PUNISH)) {
+				Msg.send(e.getPlayer(), "please-use.punish");
+				e.setCancelled(true);
+			}
+		} else if (match(config.COMMAND_UNPUNISH_BASE, e.getMessage())) {
+			if (e.getPlayer().hasPermission(config.PERM_PREVENT_UNPUNISH)) {
+				Msg.send(e.getPlayer(), "please-use.unpunish");
+				e.setCancelled(true);
+			}
 		}
+	}
 
+	private boolean match(String cmd, String msg) {
+		msg = msg.startsWith("/") ? msg : "/" + msg;
+		if (msg.equalsIgnoreCase(cmd) || (msg.indexOf(" ") != -1 && msg.substring(0, msg.indexOf(" ")).equalsIgnoreCase(cmd))) { return true; }
+		return false;
 	}
 
 }
