@@ -14,13 +14,21 @@ import com.rayzr522.punishme.ArrayUtils;
 import com.rayzr522.punishme.Config;
 import com.rayzr522.punishme.Msg;
 import com.rayzr522.punishme.Players;
-import com.rayzr522.punishme.PunishmentMath;
+import com.rayzr522.punishme.PunishMe;
 
 public class CommandPunish implements CommandExecutor {
 
+	private PunishMe plugin;
+
+	public CommandPunish(PunishMe plugin) {
+		this.plugin = plugin;
+	}
+
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-		if (!sender.hasPermission(Config.PERM_PUNISH)) {
+		Config config = plugin.config();
+
+		if (!sender.hasPermission(config.PERM_PUNISH)) {
 
 			Msg.send(sender, "no-permission");
 			return true;
@@ -45,9 +53,9 @@ public class CommandPunish implements CommandExecutor {
 
 		Player p = matches.get(0);
 
-		int time = PunishmentMath.calcMinutes(Players.get(p));
-		String punishment = Config.getCommand(p, time, ArrayUtils.concat(Arrays.copyOfRange(args, 2, args.length), " "));
-
+		int time = config.TIME_FIRST + config.TIME_REPEAT * Players.get(p);
+		String punishment = config.getCommand(p, time, ArrayUtils.concat(Arrays.copyOfRange(args, 1, args.length), " "));
+		sender.sendMessage("Executing: " + punishment);
 		Bukkit.getServer().dispatchCommand(sender, punishment);
 
 		Players.incr(p);

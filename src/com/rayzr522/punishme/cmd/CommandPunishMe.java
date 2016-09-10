@@ -21,8 +21,10 @@ public class CommandPunishMe implements CommandExecutor {
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		
+		Config config = plugin.config();
 
-		if (!sender.hasPermission(Config.PERM_PUNISHME)) {
+		if (!sender.hasPermission(config.PERM_PUNISHME)) {
 
 			Msg.send(sender, "no-permission");
 			return true;

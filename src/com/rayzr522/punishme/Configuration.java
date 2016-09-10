@@ -4,12 +4,13 @@ package com.rayzr522.punishme;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Locale;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.google.common.io.Files;
+import java.nio.file.Files;
 
 public class Configuration {
 
@@ -39,7 +40,7 @@ public class Configuration {
 		if (update && getFile(path).exists()) {
 			File file = getFile(path);
 			try {
-				Files.move(file, getFile("_updating_" + path));
+				Files.move(file.toPath(), getFile("_updating_" + path).toPath());
 			} catch (IOException e) {
 				System.err.println("Failed to update config file '" + path + "'");
 				e.printStackTrace();
@@ -56,8 +57,15 @@ public class Configuration {
 				}
 			}
 
+			try {
+				Files.delete(getFile(path).toPath());
+				Files.delete(getFile("_updating_" + path).toPath());
+			} catch (IOException e) {
+				System.err.println("Failed to update config file '" + path + "'");
+				e.printStackTrace();
+			}
+
 			saveConfig(config2, path);
-			file.delete();
 
 		} else {
 			plugin.saveResource(path, false);
@@ -93,7 +101,7 @@ public class Configuration {
 		}
 
 		for (Field field : getClass().getDeclaredFields()) {
-			if (!field.isAccessible()) {
+			if (!Modifier.isPublic(field.getModifiers())) {
 
 				continue;
 
@@ -103,12 +111,12 @@ public class Configuration {
 			if (val == null) {
 				continue;
 			}
-			if (!field.getType().isAssignableFrom(val.getClass())) {
+			if (!val.getClass().isAssignableFrom(field.getType())) {
 				System.err.println("Error loading '" + path + "': Invalid type '" + field.getType().getCanonicalName() + "' for field '" + field.getName() + "'");
 				continue;
 			}
 			try {
-				field.set(this, val);
+				set(field, this, val);
 			} catch (IllegalArgumentException e) {
 				System.err.println("Error loading '" + path + "': Invalid type '" + field.getType().getCanonicalName() + "' for field '" + field.getName() + "'");
 			} catch (IllegalAccessException | NullPointerException e) {
@@ -123,7 +131,7 @@ public class Configuration {
 		YamlConfiguration config = getConfig(path);
 
 		for (Field field : getClass().getDeclaredFields()) {
-			if (!field.isAccessible()) {
+			if (!Modifier.isPublic(field.getModifiers())) {
 				continue;
 			}
 
@@ -139,6 +147,13 @@ public class Configuration {
 
 		saveConfig(config, path);
 
+	}
+
+	private void set(Field field, Object inst, Object val) throws IllegalArgumentException, IllegalAccessException {
+		boolean accessible = field.isAccessible();
+		field.setAccessible(true);
+		field.set(inst, val);
+		field.setAccessible(accessible);
 	}
 
 	private String path(Field field) {

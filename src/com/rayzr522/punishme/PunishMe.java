@@ -4,22 +4,26 @@ package com.rayzr522.punishme;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.rayzr522.punishme.cmd.CommandPunish;
 import com.rayzr522.punishme.cmd.CommandPunishMe;
 
 public class PunishMe extends JavaPlugin implements Listener {
 
-	private Logger			logger;
-	private ConfigManager	cm;
+	private Logger	logger;
+	private Config	config;
 
 	@Override
 	public void onEnable() {
 
 		logger = getLogger();
 
-		cm = new ConfigManager(this);
+		config = new Config();
+
 		Configuration.init(this);
 		if (!Configuration.loadFromJar("messages.yml", true)) {
 			System.err.println("Failed to load config files!");
@@ -29,7 +33,10 @@ public class PunishMe extends JavaPlugin implements Listener {
 
 		load();
 
+		getCommand("punish").setExecutor(new CommandPunish(this));
 		getCommand("punishme").setExecutor(new CommandPunishMe(this));
+
+		getServer().getPluginManager().registerEvents(this, this);
 
 		logger.info(versionText() + " enabled");
 
@@ -37,16 +44,20 @@ public class PunishMe extends JavaPlugin implements Listener {
 
 	public void load() {
 
-		Msg.load(cm.getOrCreate("messages.yml"));
+		Msg.load(Configuration.getConfig("messages.yml"));
 		Players.load("players.yml");
-		new Config().load("config.yml");
+		config.load("config.yml");
 
 	}
 
 	public void save() {
 
-		cm.saveConfig("players.yml", Players.save());
+		Configuration.saveConfig(Players.save(), "players.yml");
 
+	}
+
+	public Config config() {
+		return config;
 	}
 
 	@Override
@@ -60,6 +71,20 @@ public class PunishMe extends JavaPlugin implements Listener {
 	public String versionText() {
 
 		return getDescription().getName() + " v" + getDescription().getVersion();
+
+	}
+
+	@EventHandler
+	public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
+
+		if (e.getPlayer().hasPermission(config.PERM_NOPREVENT)) { return; }
+
+		String msg = e.getMessage();
+		String cmd = "/" + config.COMMAND_BASE;
+		if (msg.equalsIgnoreCase(cmd) || (msg.indexOf(" ") != -1 && msg.substring(0, msg.indexOf(" ")).equalsIgnoreCase(cmd))) {
+			Msg.send(e.getPlayer(), "no-permission");
+			e.setCancelled(true);
+		}
 
 	}
 
