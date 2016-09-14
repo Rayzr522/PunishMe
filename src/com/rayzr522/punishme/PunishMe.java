@@ -139,7 +139,7 @@ public class PunishMe extends JavaPlugin implements Listener {
 	}
 
 	private boolean match(String cmd, String msg) {
-		msg = msg.startsWith("/") ? msg : "/" + msg;
+		cmd = cmd.startsWith("/") ? cmd : "/" + cmd;
 		if (msg.equalsIgnoreCase(cmd) || (msg.indexOf(" ") != -1 && msg.substring(0, msg.indexOf(" ")).equalsIgnoreCase(cmd))) { return true; }
 		return false;
 	}
