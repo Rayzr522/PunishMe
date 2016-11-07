@@ -16,47 +16,47 @@ import com.rayzr522.punishme.PunishMe;
 
 public class CommandUnPunish implements CommandExecutor {
 
-	private PunishMe plugin;
+    private PunishMe plugin;
 
-	public CommandUnPunish(PunishMe plugin) {
-		this.plugin = plugin;
-	}
+    public CommandUnPunish(PunishMe plugin) {
+        this.plugin = plugin;
+    }
 
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-		Config config = plugin.config();
+        Config config = plugin.config();
 
-		if (!sender.hasPermission(config.PERM_PUNISH)) {
+        if (!sender.hasPermission(config.PERM_PUNISH)) {
 
-			Msg.send(sender, "no-permission");
-			return true;
+            Msg.send(sender, "no-permission");
+            return true;
 
-		}
+        }
 
-		if (args.length < 1) {
+        if (args.length < 1) {
 
-			Msg.send(sender, "usage.unpunish");
-			return true;
+            Msg.send(sender, "usage.unpunish");
+            return true;
 
-		}
+        }
 
-		List<Player> matches = Bukkit.matchPlayer(args[0]);
-		if (matches.size() < 1) {
-			Msg.send(sender, "no-player", args[0]);
-			return true;
-		} else if (matches.size() > 1) {
-			Msg.send(sender, "multiple-players", args[0]);
-			return true;
-		}
+        List<Player> matches = Bukkit.matchPlayer(args[0]);
+        if (matches.size() < 1) {
+            Msg.send(sender, "no-player", args[0]);
+            return true;
+        } else if (matches.size() > 1) {
+            Msg.send(sender, "multiple-players", args[0]);
+            return true;
+        }
 
-		Player p = matches.get(0);
-		Bukkit.getServer().dispatchCommand(sender, config.getUnpunishCommand(p));
+        Player p = matches.get(0);
+        Bukkit.getServer().dispatchCommand(sender, config.getUnpunishCommand(p));
 
-		Players.decr(p);
-		Msg.send(sender, "unpunished", p.getDisplayName(), "" + Players.get(p));
+        Players.decr(p);
+        Msg.send(sender, "unpunished", p.getDisplayName(), "" + Players.get(p));
 
-		return true;
+        return true;
 
-	}
+    }
 
 }

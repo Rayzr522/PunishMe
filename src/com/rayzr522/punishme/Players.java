@@ -10,66 +10,67 @@ import org.bukkit.entity.Player;
 
 public class Players {
 
-	public static HashMap<UUID, Integer> punishments = new HashMap<UUID, Integer>();
+    public static HashMap<UUID, Integer> punishments = new HashMap<UUID, Integer>();
 
-	public static void load(String path) {
+    public static void load(String path) {
 
-		YamlConfiguration config = Configuration.getConfig(path);
+        YamlConfiguration config = Configuration.getConfig(path);
 
-		for (String key : config.getKeys(false)) {
+        for (String key : config.getKeys(false)) {
 
-			punishments.put(UUID.fromString(key), config.getInt(key));
+            punishments.put(UUID.fromString(key), config.getInt(key));
 
-		}
+        }
 
-	}
+    }
 
-	public static int get(Player p) {
-		return get(p.getUniqueId());
-	}
+    public static int get(Player p) {
+        return get(p.getUniqueId());
+    }
 
-	public static int get(UUID id) {
-		if (!punishments.containsKey(id)) {
-			punishments.put(id, 0);
-		}
-		return punishments.get(id);
-	}
+    public static int get(UUID id) {
+        if (!punishments.containsKey(id)) {
+            punishments.put(id, 0);
+        }
+        return punishments.get(id);
+    }
 
-	public static int incr(Player p) {
+    public static int incr(Player p) {
 
-		return incr(p.getUniqueId());
+        return incr(p.getUniqueId());
 
-	}
+    }
 
-	public static int incr(UUID id) {
+    public static int incr(UUID id) {
 
-		int num = get(id) + 1;
-		punishments.put(id, num);
-		return num;
+        int num = get(id) + 1;
+        punishments.put(id, num);
+        return num;
 
-	}
+    }
 
-	public static int decr(Player p) {
-		return decr(p.getUniqueId());
-	}
+    public static int decr(Player p) {
+        return decr(p.getUniqueId());
+    }
 
-	public static int decr(UUID id) {
+    public static int decr(UUID id) {
 
-		int num = get(id) - 1;
-		if (num < 0) num = 0;
-		punishments.put(id, num);
-		return num;
+        int num = get(id) - 1;
+        if (num < 0)
+            num = 0;
+        punishments.put(id, num);
+        return num;
 
-	}
+    }
 
-	public static YamlConfiguration save() {
-		YamlConfiguration config = new YamlConfiguration();
+    public static YamlConfiguration save() {
+        YamlConfiguration config = new YamlConfiguration();
 
-		for (Entry<UUID, Integer> entry : punishments.entrySet()) {
-			config.set(entry.getKey().toString(), entry.getValue());
-		}
+        for (Entry<UUID, Integer> entry : punishments.entrySet()) {
+            config.set(entry.getKey().toString(), entry.getValue());
+        }
 
-		return config;
-	}
+        return config;
+    }
 
 }

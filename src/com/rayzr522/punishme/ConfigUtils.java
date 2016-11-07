@@ -10,64 +10,68 @@ import org.bukkit.util.Vector;
 
 public class ConfigUtils {
 
-	public static String toString(Vector vector) {
+    public static String toString(Vector vector) {
 
-		return vector.getX() + ":" + vector.getY() + ":" + vector.getZ();
+        return vector.getX() + ":" + vector.getY() + ":" + vector.getZ();
 
-	}
+    }
 
-	public static String toString(Location loc) {
+    public static String toString(Location loc) {
 
-		return toString(loc.getWorld()) + ":" + loc.getX() + ":" + loc.getY() + ":" + loc.getZ() + ":" + loc.getPitch() + ":" + loc.getYaw();
+        return toString(loc.getWorld()) + ":" + loc.getX() + ":" + loc.getY() + ":" + loc.getZ() + ":" + loc.getPitch() + ":" + loc.getYaw();
 
-	}
+    }
 
-	public static String toString(World world) {
+    public static String toString(World world) {
 
-		return world.getUID().toString();
+        return world.getUID().toString();
 
-	}
+    }
 
-	public static Vector vector(String vec) {
+    public static Vector vector(String vec) {
 
-		String[] split = vec.split(":");
+        String[] split = vec.split(":");
 
-		if (split.length != 3) { return null; }
+        if (split.length != 3) {
+            return null;
+        }
 
-		return new Vector(d(split[0]), d(split[1]), d(split[2]));
+        return new Vector(d(split[0]), d(split[1]), d(split[2]));
 
-	}
+    }
 
-	public static Location location(String loc) {
+    public static Location location(String loc) {
 
-		String[] split = loc.split(":");
-		if (split.length != 6) { return null; }
+        String[] split = loc.split(":");
+        if (split.length != 6) {
+            return null;
+        }
 
-		if (world(split[0]) == null) {
-			System.err.println("'" + split[0] + "' is an invalid world UUID!");
-			return null;
-		}
+        if (world(split[0]) == null) {
+            System.err.println("'" + split[0] + "' is an invalid world UUID!");
+            return null;
+        }
 
-		return new Location(world(split[0]), d(split[1]), d(split[2]), d(split[3]), f(split[4]), f(split[5]));
+        return new Location(world(split[0]), d(split[1]), d(split[2]), d(split[3]), f(split[4]), f(split[5]));
 
-	}
+    }
 
-	public static World world(String world) {
+    public static World world(String world) {
 
-		return Bukkit.getWorld(UUID.fromString(world));
+        return Bukkit.getWorld(UUID.fromString(world));
 
-	}
+    }
 
-	public static int i(String text) {
-		return Integer.parseInt(text);
-	}
+    public static int i(String text) {
+        return Integer.parseInt(text);
+    }
 
-	public static double d(String text) {
-		return Double.parseDouble(text);
-	}
+    public static double d(String text) {
+        return Double.parseDouble(text);
+    }
 
-	public static float f(String text) {
-		return Float.parseFloat(text);
-	}
+    public static float f(String text) {
+        return Float.parseFloat(text);
+    }
 
 }

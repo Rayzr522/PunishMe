@@ -12,54 +12,54 @@ import com.rayzr522.punishme.PunishMe;
 
 public class CommandPunishMe implements CommandExecutor {
 
-	private PunishMe plugin;
+    private PunishMe plugin;
 
-	public CommandPunishMe(PunishMe plugin) {
+    public CommandPunishMe(PunishMe plugin) {
 
-		this.plugin = plugin;
+        this.plugin = plugin;
 
-	}
+    }
 
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		
-		Config config = plugin.config();
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-		if (!sender.hasPermission(config.PERM_PUNISHME)) {
+        Config config = plugin.config();
 
-			Msg.send(sender, "no-permission");
-			return true;
+        if (!sender.hasPermission(config.PERM_PUNISHME)) {
 
-		}
+            Msg.send(sender, "no-permission");
+            return true;
 
-		if (args.length < 1) {
+        }
 
-			PluginDescriptionFile pdf = plugin.getDescription();
-			Msg.send(sender, "version-info", pdf.getName(), pdf.getVersion());
-			return true;
+        if (args.length < 1) {
 
-		}
+            PluginDescriptionFile pdf = plugin.getDescription();
+            Msg.send(sender, "version-info", pdf.getName(), pdf.getVersion());
+            return true;
 
-		String cmd = args[0].toLowerCase();
+        }
 
-		if (cmd.equals("reload")) {
+        String cmd = args[0].toLowerCase();
 
-			plugin.reloadConfig();
-			plugin.load();
-			Msg.send(sender, "config-reloaded");
+        if (cmd.equals("reload")) {
 
-		} else if (cmd.equals("save")) {
+            plugin.reloadConfig();
+            plugin.load();
+            Msg.send(sender, "config-reloaded");
 
-			plugin.save();
-			Msg.send(sender, "config-saved");
+        } else if (cmd.equals("save")) {
 
-		} else {
+            plugin.save();
+            Msg.send(sender, "config-saved");
 
-			Msg.send(sender, "usage.punishme");
+        } else {
 
-		}
+            Msg.send(sender, "usage.punishme");
 
-		return true;
+        }
 
-	}
+        return true;
+
+    }
 
 }
