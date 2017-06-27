@@ -1,65 +1,45 @@
+package me.rayzr522.punishme.command;
 
-package com.rayzr522.punishme.cmd;
-
+import me.rayzr522.punishme.PunishMe;
+import me.rayzr522.punishme.config.Msg;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.PluginDescriptionFile;
-
-import com.rayzr522.punishme.Config;
-import com.rayzr522.punishme.Msg;
-import com.rayzr522.punishme.PunishMe;
 
 public class CommandPunishMe implements CommandExecutor {
+    private static String PERMISSION = "PunishMe.punishme";
 
     private PunishMe plugin;
 
     public CommandPunishMe(PunishMe plugin) {
-
         this.plugin = plugin;
-
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        Config config = plugin.config();
-
-        if (!sender.hasPermission(config.PERM_PUNISHME)) {
-
-            Msg.send(sender, "no-permission");
+        if (!sender.hasPermission(PERMISSION)) {
+            Msg.send(sender, "no-permission", PERMISSION);
             return true;
-
         }
 
         if (args.length < 1) {
-
-            PluginDescriptionFile pdf = plugin.getDescription();
-            Msg.send(sender, "version-info", pdf.getName(), pdf.getVersion());
+            Msg.send(sender, "version-info", plugin.getName(), plugin.getDescription().getVersion());
             return true;
-
         }
 
-        String cmd = args[0].toLowerCase();
+        String sub = args[0].toLowerCase();
 
-        if (cmd.equals("reload")) {
-
-            plugin.reloadConfig();
-            plugin.load();
+        if (sub.equals("reload")) {
+            plugin.save();
+            plugin.reload();
             Msg.send(sender, "config-reloaded");
-
-        } else if (cmd.equals("save")) {
-
+        } else if (sub.equals("save")) {
             plugin.save();
             Msg.send(sender, "config-saved");
-
         } else {
-
             Msg.send(sender, "usage.punishme");
-
         }
 
         return true;
-
     }
 
 }

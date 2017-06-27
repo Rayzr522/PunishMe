@@ -1,0 +1,22 @@
+punishments:
+  mute:
+    command:
+      punish: "mute {player} {time}m {reason}"
+      unpunish: "unmute {player}"
+    time:
+      # The value of the {time} parameter for the first punishment
+      first: 5
+      # How much to increment {time} each time after that
+      repeat: 5
+  tempban:
+    command:
+      punish: "tempban {player} {time}m {reason}"
+      unpunish: "unban {player}"
+    time:
+      # This example would ban them for 30 minutes the first time, and increase by an hour each time after that
+      # 1. 30 minutes
+      # 2. 1 hour and 30 minutes
+      # 3. 2 hours and 30 minutes
+      # etc.
+      first: 30
+      repeat: 60

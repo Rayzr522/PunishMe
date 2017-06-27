@@ -1,21 +1,18 @@
+package me.rayzr522.punishme.utils;
 
-package com.rayzr522.punishme;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.file.Files;
 import java.util.Locale;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.nio.file.Files;
-
 public class Configuration {
-
     public static JavaPlugin plugin;
-    public static File       dataFolder;
+    public static File dataFolder;
 
     public static void init(JavaPlugin plugin) {
         Configuration.plugin = plugin;
@@ -26,7 +23,7 @@ public class Configuration {
     }
 
     public static File getFile(String path) {
-        return new File(dataFolder.getPath() + File.separator + path.replace("/", File.separator));
+        return new File(dataFolder.getPath(), path.replace('/', File.separatorChar));
     }
 
     public static YamlConfiguration getConfig(String path) {
@@ -34,7 +31,6 @@ public class Configuration {
     }
 
     public static boolean loadFromJar(String path, boolean update) {
-
         if (plugin.getResource(path) == null) {
             return false;
         }
@@ -82,7 +78,6 @@ public class Configuration {
     }
 
     public static boolean saveConfig(YamlConfiguration config, String path) {
-
         try {
             config.save(getFile(path));
             return true;
@@ -91,11 +86,9 @@ public class Configuration {
             e.printStackTrace();
             return false;
         }
-
     }
 
     public void load(String path) {
-
         YamlConfiguration config = getConfig(path);
         if (config.getKeys(true).size() < 1) {
             save(path);
@@ -104,9 +97,7 @@ public class Configuration {
 
         for (Field field : getClass().getDeclaredFields()) {
             if (!Modifier.isPublic(field.getModifiers())) {
-
                 continue;
-
             }
 
             Object val = config.get(path(field));
@@ -121,11 +112,9 @@ public class Configuration {
 
             }
         }
-
     }
 
     public void save(String path) {
-
         YamlConfiguration config = getConfig(path);
 
         for (Field field : getClass().getDeclaredFields()) {
@@ -140,11 +129,9 @@ public class Configuration {
             } catch (IllegalAccessException e) {
 
             }
-
         }
 
         saveConfig(config, path);
-
     }
 
     private void set(Field field, Object inst, Object val) throws IllegalArgumentException, IllegalAccessException {

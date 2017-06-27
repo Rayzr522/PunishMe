@@ -9,24 +9,25 @@
 #         here:
 #           key3: ", how are you today?"
 #     key4: "[[key2]][[your.path.here.key3]]"
-# 
+#
 # - A color-code reference sheet can be found at the bottom of this file
 
 
 
 usage:
     punishme: "&7/punishme &a[reload|save]"
-    punish: "&7/punish &a<player> <reason>"
-    unpunish: "&7/unpunish &a<player>"
+    punish: "&7/punish &alist|[<punishment> <player> <reason>]"
+    unpunish: "&7/unpunish &a<punishment> <player>"
 
 please-use:
     punish: "&7Please use &a/punish"
     unpunish: "&7Please use &a/unpunish"
 
 only-players: "&cOnly players can use this command!"
-no-permission: "&cYou don't have permission to do that"
+no-permission: "&cYou need the permission '{0}' to do that!"
 error: "&cSomething went wrong! Please find an Admin and tell them contact Rayzr522 on the Bukkit forums."
 
+invalid-punishment: "&7The punishment '&a{0}&7' is not a valid punishment"
 no-player: "&7The player '&a{0}&7' could not be found"
 multiple-players: "&7More than one player matching '&a{0}&7' were found"
 punished: "&7Player '&a{0}&7' has been punished &a{1}&7 time(s)"
@@ -36,7 +37,11 @@ config-saved: "&7The config has been saved"
 config-reloaded: "&7The config has been reloaded"
 version-info: "&7This server is running &a{0}&7 v&a{1}&7"
 
-
+punishment-info:
+- "&7Name: &a{0}"
+- "&7Punishment command: &a{1}"
+- "&7Unpunishment command: &a{2}"
+- "&7Initial time: &a{3} &8| &7Repeat time: &a{4}"
 
 # 0 = black
 # 1 = dark blue
